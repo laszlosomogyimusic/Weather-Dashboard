@@ -14,6 +14,13 @@ var currentWeatherRequestParams = {
   "units": "metric"
 };
 
+/* Forecast API variables */
+var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?";
+var forecastRequestParams = {
+  "appid": APIKey,
+  "units": "metric"
+};
+
 
 var cityWithCoordinates = {
   "city": "",
@@ -31,7 +38,7 @@ function callGeoCodingAPI(cityName) {
   $.ajax({
     url: fullURL,
     method: "GET"
-  }).done(parseGeoCodingResponse);
+  }).then(parseGeoCodingResponse);
 }
 
 function parseGeoCodingResponse(geoCodingResponse) {
@@ -44,7 +51,6 @@ function parseGeoCodingResponse(geoCodingResponse) {
 
   //we have to call the second API from here, to make sure it is being called in order
   callCurrentWeatherAPI();
-
 }
 
 
@@ -59,12 +65,37 @@ function callCurrentWeatherAPI() {
   $.ajax({
     url: fullURL,
     method: "GET"
-  }).done(parseCurrentWeatherResponse);
+  }).then(parseCurrentWeatherResponse);
 }
 
 function parseCurrentWeatherResponse(currentWeatherResponse) {
 
+  console.log("parseCurrentWeatherResponse")
   console.log(currentWeatherResponse);
+
+  //we have to call the third API from here, to make sure it is being called in order
+  callForecastAPI();
+
+}
+
+
+function callForecastAPI() {
+
+  forecastRequestParams.lat = cityWithCoordinates.latitude;
+  forecastRequestParams.lon = cityWithCoordinates.longitude;
+
+  var fullURL = forecastURL + $.param(forecastRequestParams);
+  console.log(fullURL);
+
+  $.ajax({
+    url: fullURL,
+    method: "GET"
+  }).then(parseForecastResponse);
+}
+
+function parseForecastResponse(forecastResponse) {
+
+  console.log(forecastResponse);
 }
 
 
