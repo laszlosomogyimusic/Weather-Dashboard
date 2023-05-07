@@ -2,7 +2,6 @@
 function callGeoCodingAPI(cityName) {
   geoCodingRequestParams.q = cityName;
   var fullURL = geoCodingURL + $.param(geoCodingRequestParams);
-  console.log(fullURL);
 
   $.ajax({
     url: fullURL,
@@ -24,7 +23,6 @@ function callForecastAPI() {
   forecastRequestParams.lon = cityWithCoordinates.longitude;
 
   var fullURL = forecastURL + $.param(forecastRequestParams);
-  console.log(fullURL);
 
   $.ajax({
     url: fullURL,
