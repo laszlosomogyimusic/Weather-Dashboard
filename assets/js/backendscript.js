@@ -1,7 +1,3 @@
-//this store the daily weather objects. See parseForecastResponse function for structure
-var weeklyWeather = [];
-
-
 //gets the longitude and latitude for the given city name
 function callGeoCodingAPI(cityName) {
   geoCodingRequestParams.q = cityName;
@@ -18,14 +14,12 @@ function parseGeoCodingResponse(geoCodingResponse) {
   cityWithCoordinates.latitude = geoCodingResponse[0].lat;
   cityWithCoordinates.longitude = geoCodingResponse[0].lon;
 
-
   //we have to call the second API from here, to make sure it is being called in order
   callForecastAPI();
 }
 
 
 function callForecastAPI() {
-
   forecastRequestParams.lat = cityWithCoordinates.latitude;
   forecastRequestParams.lon = cityWithCoordinates.longitude;
 
@@ -54,13 +48,4 @@ function parseForecastResponse(forecastResponse) {
     dailyWeather.weatherIcon = forecastResponse.list[i].weather[0].icon;
     weeklyWeather.push(dailyWeather);
   }
-}
-
-
-function callAPIs() {
-  // $.when(
-  //   callGeoCodingAPI(cityWithCoordinates.city)
-  //   )
-  //   .done(function);
-  
 }

@@ -20,3 +20,16 @@ var cityWithCoordinates = {
   "longitude": "",
   "latitude": ""
 };
+
+//the weeklyWeather array stores the daily weather objects, which has the following structure:
+// dailyWeather.date
+// dailyWeather.temp
+// dailyWeather.humidity
+// dailyWeather.wind
+// dailyWeather.weather
+// dailyWeather.weatherDescription
+// dailyWeather.weatherIcon
+var weeklyWeather = [];
+
+
+
