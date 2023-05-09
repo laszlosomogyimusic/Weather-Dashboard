@@ -1,7 +1,7 @@
 var APIKey = "be76eca0bfdd1a9df0350d3a1c6cf97e";
 
 /*** GeoCoding API variables ***/
-var geoCodingURL = "http://api.openweathermap.org/geo/1.0/direct?";
+var geoCodingURL = "https://api.openweathermap.org/geo/1.0/direct?";
 var geoCodingRequestParams = {
   "appid": APIKey,
   "limit": "1"
