@@ -2,11 +2,12 @@
 function callGeoCodingAPI(cityName) {
   geoCodingRequestParams.q = cityName;
   var fullURL = geoCodingURL + $.param(geoCodingRequestParams);
+  console.log(fullURL);
 
-  $.ajax({
+  return $.ajax({
     url: fullURL,
     method: "GET"
-  }).then(parseGeoCodingResponse);
+  });//.then(parseGeoCodingResponse);
 }
 
 function parseGeoCodingResponse(geoCodingResponse) {
@@ -14,7 +15,7 @@ function parseGeoCodingResponse(geoCodingResponse) {
   cityWithCoordinates.longitude = geoCodingResponse[0].lon;
 
   //we have to call the second API from here, to make sure it is being called in order
-  callForecastAPI();
+  //callForecastAPI();
 }
 
 
@@ -23,11 +24,12 @@ function callForecastAPI() {
   forecastRequestParams.lon = cityWithCoordinates.longitude;
 
   var fullURL = forecastURL + $.param(forecastRequestParams);
+  console.log(fullURL);
 
-  $.ajax({
+  return $.ajax({
     url: fullURL,
     method: "GET"
-  }).then(parseForecastResponse);
+  });//.then(parseForecastResponse);
 }
 
 function parseForecastResponse(forecastResponse) {
