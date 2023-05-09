@@ -29,7 +29,7 @@ function loadSearchedCities() {
 
   for(var i=0; i<searchedCities.length;i++){
       var button = $("<button>");
-      button.text(searchedCities[i]).addClass("btn savedBtn");
+      button.text(searchedCities[i]).addClass("btn");
 
       $("#history").append(button);
   }
