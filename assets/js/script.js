@@ -1,7 +1,38 @@
+var searchedCities = [];
+
 function initVariables() {
   weeklyWeather = [];
+  searchedCities = [];
   $("#today").empty();
   $("#forecast").empty();
+}
+
+function saveSearchedCity() {
+  searchedCities.push(cityWithCoordinates.city);
+
+  console.log(searchedCities);
+
+  var button = $("<button>")
+  button.text(cityWithCoordinates.city).addClass("btn");
+
+  $("#history").append(button);
+
+  localStorage.setItem("weaterAppSearches",JSON.stringify(searchedCities));
+}
+
+function loadSearchedCities() {
+  var savedSearches = JSON.parse(localStorage.getItem("weaterAppSearches"))
+
+  if(savedSearches != null){
+    searchedCities = savedSearches;
+  }
+
+  for(var i=0; i<searchedCities.length;i++){
+      var button = $("<button>");
+      button.text(searchedCities[i]).addClass("btn savedBtn");
+
+      $("#history").append(button);
+  }
 }
 
 function generateTemperature(id, text) {
@@ -73,16 +104,9 @@ function displayForecast() {
   }
 }
 
-// CLICK HANDLERS
-// ==========================================================
-$("#search-button").on("click", function(event) {
-  event.preventDefault();
+loadSearchedCities();
 
-  initVariables();
-
-  //see the structure in globalvariables
-  cityWithCoordinates.city = $("#search-input").val().trim();
-  
+function doTheSearch() {
 
   $.when(
     callGeoCodingAPI(cityWithCoordinates.city)
@@ -96,6 +120,7 @@ $("#search-button").on("click", function(event) {
           parseForecastResponse(forecastResponse);
           displayToday();
           displayForecast();
+          saveSearchedCity();
       })
     })
     .then(function(){
@@ -104,6 +129,18 @@ $("#search-button").on("click", function(event) {
     .fail(function(f1Val, f2Val){
       console.log('fail!    f1, f2: ' + JSON.stringify([f1Val, f2Val]));
     });
+};
+
+// CLICK HANDLERS
+// ==========================================================
+$("#search-button").on("click", function(event) {
+  event.preventDefault();
+
+  initVariables();
+
+  //see the structure in globalvariables
+  cityWithCoordinates.city = $("#search-input").val().trim();
+  doTheSearch();
 
 });
 
