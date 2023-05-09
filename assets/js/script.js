@@ -1,34 +1,77 @@
 function initVariables() {
   weeklyWeather = [];
   $("#today").empty();
+  $("#forecast").empty();
+}
+
+function generateTemperature(id, text) {
+    var temperature = $("<p>");
+    temperature.attr("id", "day-" + id + "-temp");
+    temperature.text("Temp: " + text  + " ");
+    temperature.append("<span>&#8451;</span>");
+
+    return temperature;
+}
+
+function generateWind(id, text) {
+  var wind = $("<p>");
+  wind.attr("id", "day-" + id + "-wind");
+  wind.text("Wind: " + text + " km/h");
+
+  return wind;
+}
+
+function generateHumidity(id, text) {
+  var humidity = $("<p>");
+  humidity.attr("id", "day-" + id + "-humidity");
+  humidity.text("Humidity: " + text + "%");
+
+  return humidity;
 }
 
 function displayToday() {
   var today = $("#today");
-  today.append(weeklyWeather[0].date);
+  var header = $("<h3>");
+  header.text(cityWithCoordinates.city + " " + moment(weeklyWeather[0].date).format("D/M/Y"));
+
   icon = $("<img>");
   icon.attr("src", "http://openweathermap.org/img/w/" + weeklyWeather[0].weatherIcon + ".png");
-  today.append(icon);
-  var temperature = $("<p>");
-  temperature.addClass("today-temp");
-  temperature.text("Temp: " + weeklyWeather[0].temp + " ");
-  temperature.append("<span>&#8451;</span>");
+  header.append(icon);
+  today.append(header);
 
-  var wind = $("<p>");
-  wind.addClass("today-wind");
-  wind.text("Wind: " + weeklyWeather[0].wind + " km/h");
-
-  var humidity = $("<p>");
-  humidity.addClass("today-humidity");
-  humidity.text("Humidity: " + weeklyWeather[0].humidity + "%");
-
-
-  today.append(temperature);
-  today.append(wind);
-  today.append(humidity);
-
+  today.append(generateTemperature(0, weeklyWeather[0].temp));
+  today.append(generateWind(0, weeklyWeather[0].wind));
+  today.append(generateHumidity(0, weeklyWeather[0].humidity));
 };
 
+
+
+function displayForecast() {
+  var forecast = $("#forecast");
+
+  for(var i=1; i<weeklyWeather.length; i++) {
+    var cardDiv = $("<div>");
+    cardDiv.addClass("card");
+    cardDiv.attr("id", "day-" + i);
+
+
+    var header = $("<h3>");
+    header.text(moment(weeklyWeather[i].date).format("D/M/Y"));
+
+    icon = $("<img>");
+    icon.attr("src", "http://openweathermap.org/img/w/" + weeklyWeather[i].weatherIcon + ".png");
+    header.append(icon);
+
+
+    cardDiv.append(header);
+    cardDiv.append(generateTemperature(i, weeklyWeather[i].temp));
+    cardDiv.append(generateWind(i, weeklyWeather[i].wind));
+    cardDiv.append(generateHumidity(i, weeklyWeather[i].humidity));
+
+    forecast.append(cardDiv);
+
+  }
+}
 
 // CLICK HANDLERS
 // ==========================================================
@@ -52,6 +95,7 @@ $("#search-button").on("click", function(event) {
         .done(function(forecastResponse) {
           parseForecastResponse(forecastResponse);
           displayToday();
+          displayForecast();
       })
     })
     .then(function(){
