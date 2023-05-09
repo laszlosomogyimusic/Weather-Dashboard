@@ -2,7 +2,7 @@ var searchedCities = [];
 
 function initVariables() {
   weeklyWeather = [];
-  searchedCities = [];
+ // searchedCities = [];
   $("#today").empty();
   $("#forecast").empty();
 }
